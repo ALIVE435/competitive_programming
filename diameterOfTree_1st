@@ -43,8 +43,9 @@ int main()
         adj[b-1].push_back(a-1);
     }
     int ans=0;
+    int root; cin>>root;
     vector<vector<int>>diameter(n,vector<int>(2,0));
-    dfs(-1,0,adj,diameter,ans);
+    dfs(-1,root-1,adj,diameter,ans);
     cout<<ans;
 return 0;
 }
