@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define mod 1000000007
+
+//in-out trick in tree
+/*given a tree:check whether x is an ancestor of y or not in O(1) for q no of queries*/
+
+/*x is an ancestor of y if: in-time(x)<in-time(y) && out-time(x)>out-time(y)
+or in-time(x)<in-time(y)<out-time(y)<out-time(x) ie in-time and out-time of y are in the range b/w in-time and out-time of x*/
+
+void dfs(int curr_node,int parent,vector<vector<int>>&adj,vector<int>&inTime,vector<int>&outTime,int & globalTime){
+    globalTime++;
+    inTime[curr_node]=globalTime;
+    for(auto child:adj[curr_node]){
+        if(child!=parent){
+            dfs(child,curr_node,adj,inTime,outTime,globalTime);
+        }
+    }
+    globalTime++;
+    outTime[curr_node]=globalTime;
+}
+bool isAncestor(int x,int y, vector<int>&In,vector<int>&Out){
+    return ((In[x-1]<In[y]) && (Out[x-1]>Out[y-1]));
+}
+int main()
+{
+    int n,q; cin>>n>>q;
+    vector<vector<int>>adj(n);
+    vector<int>inTime(n),outTime(n);
+    for(int i=0;i<n-1;i++){
+        int a,b; cin>>a>>b;
+        adj[a-1].push_back(b-1);
+        adj[b-1].push_back(a-1);
+    }   
+    int root; cin>>root;
+    int globalTime=0;
+    dfs(root,-1,adj,inTime,outTime,globalTime);
+    while(q--){
+        int x,y; cin>>x>>y;
+        cout<<isAncestor(x,y,inTime,outTime)<<"\n";
+    }
+
+
+return 0;
+}
