@@ -1,0 +1,37 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define mod 1000000007
+
+/*diameter of tree:find the node at maximum distance from any random node as root,that will be one of the end of the diameter then taking the node as root find the maximum distant node, distance b/w them is the diameter */
+
+void dfs(int parent,int curr_node,vector<vector<int>>&adj,int curr_height,int  &maxDistantNode,int & max_distance){
+    if(curr_height>max_distance){
+        maxDistantNode=curr_node,max_distance=curr_height;
+    }
+    curr_height++;
+    for(auto child:adj[curr_node]){
+        if(child!=parent){
+            dfs(curr_node,child,adj,curr_height,maxDistantNode,max_distance);
+        }
+    }
+}
+int main()
+{
+    int n; cin>>n;
+    vector<vector<int>>adj(n);
+    for(int i=0;i<n-1;i++){
+        int a,b; cin>>a>>b;
+        adj[a-1].push_back(b-1);
+        adj[b-1].push_back(a-1);
+    }
+    int maxDistantNode=-1;
+    int max_distance=0;
+    dfs(-1,2,adj,0,maxDistantNode,max_distance);
+    cout<<maxDistantNode<<" "<<max_distance<<"\n";
+    int root=maxDistantNode;
+    maxDistantNode=-1,max_distance=0;
+    dfs(-1,root,adj,0,maxDistantNode,max_distance);
+    cout<<maxDistantNode<<" "<<max_distance<<"\n";
+  
+return 0;
+}
