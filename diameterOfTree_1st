@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define mod 1000000007
+/*diameter of tree:find length of maximum path via each n nodes and take maximum of all=sum of two maximum height of child node(from leaf nodes)
+ie max_heigth+sec_max_height+2*/
+
+void dfs(int parent,int curr_node,vector<vector<int>>&adj,vector<vector<int>>&diameter,int &ans){
+    int max_height=0,sec_max_height=0;
+    int no_of_child=0;
+    for(int child:adj[curr_node]){
+        if(child!=parent){
+            no_of_child++;
+            dfs(curr_node,child,adj,diameter,ans);
+            if(diameter[child][0]>=max_height){
+                sec_max_height=max_height;
+                max_height=diameter[child][0];
+            }
+        }
+    }
+    if(no_of_child>1){
+        diameter[curr_node][0]=max_height+1;
+        diameter[curr_node][1]=max_height+sec_max_height+2;
+        ans=max(ans,diameter[curr_node][1]);
+    }
+    else if(no_of_child==1){
+        diameter[curr_node][0]=max_height+1;
+        diameter[curr_node][1]=max_height+1;
+        ans=max(ans,diameter[curr_node][1]);
+    }
+    else{
+        diameter[curr_node][0]=0;
+        diameter[curr_node][1]=0;
+        ans=max(ans,diameter[curr_node][1]);
+    }
+}
+int main()
+{
+    int n; cin>>n;
+    vector<vector<int>>adj(n);
+    for(int i=0;i<n-1;i++){
+        int a,b; cin>>a>>b;
+        adj[a-1].push_back(b-1);
+        adj[b-1].push_back(a-1);
+    }
+    int ans=0;
+    vector<vector<int>>diameter(n,vector<int>(2,0));
+    dfs(-1,0,adj,diameter,ans);
+    cout<<ans;
+return 0;
+}
