@@ -8,12 +8,12 @@ using namespace std;
 /*x is an ancestor of y if: in-time(x)<in-time(y) && out-time(x)>out-time(y)
 or in-time(x)<in-time(y)<out-time(y)<out-time(x) ie in-time and out-time of y are in the range b/w in-time and out-time of x*/
 
-void dfs(int curr_node,int parent,vector<vector<int>>&adj,vector<int>&inTime,vector<int>&outTime,int & globalTime){
+void dfs_in_out(int curr_node,int parent,vector<vector<int>>&adj,vector<int>&inTime,vector<int>&outTime,int & globalTime){
     globalTime++;
     inTime[curr_node]=globalTime;
     for(auto child:adj[curr_node]){
         if(child!=parent){
-            dfs(child,curr_node,adj,inTime,outTime,globalTime);
+            dfs_in_out(child,curr_node,adj,inTime,outTime,globalTime);
         }
     }
     globalTime++;
@@ -34,7 +34,7 @@ int main()
     }   
     int root; cin>>root;
     int globalTime=0;
-    dfs(root,-1,adj,inTime,outTime,globalTime);
+    dfs_in_out(root,-1,adj,inTime,outTime,globalTime);
     while(q--){
         int x,y; cin>>x>>y;
         cout<<isAncestor(x,y,inTime,outTime)<<"\n";
