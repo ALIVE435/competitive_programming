@@ -3,7 +3,7 @@
 using namespace std;
 #define mod 1000000007
 
-//LCA in O(logn)
+//LCA in O(logn) :Bitmasking approach
 //Instead of choosing lowest parents of x which is an ancestor of y we can go for highest parent of x which is not an ancestor of y,and find it's parent
 
 void dfs_in_out(int parent,int curr_node,vector<vector<int>>&adj,vector<int>&In,vector<int>&Out,int &globalTime){
