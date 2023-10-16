@@ -1,0 +1,91 @@
+//https://cses.fi/problemset/result/7408903/:problem solution
+#include<bits/stdc++.h>
+using namespace std;
+#define mod 1000000007
+
+//LCA in O(logn)
+//Instead of choosing lowest parents of x which is an ancestor of y we can go for highest parent of x which is not an ancestor of y,and find it's parent
+
+void dfs_in_out(int parent,int curr_node,vector<vector<int>>&adj,vector<int>&In,vector<int>&Out,int &globalTime){
+    globalTime++;
+    In[curr_node]=globalTime;
+    for(auto child:adj[curr_node]){
+        if(child!=parent){
+            dfs_in_out(curr_node,child,adj,In,Out,globalTime);
+        }
+    }
+    globalTime++;
+    Out[curr_node]=globalTime;
+}
+void dfs(int parent,int curr_node,vector<vector<int>>&adj,vector<vector<int>>&parentsList){
+    parentsList[curr_node][0]=parent;
+    for(auto child:adj[curr_node]){
+        if(child!=parent){
+            dfs(curr_node,child,adj,parentsList);
+        }
+    }
+}
+int kthParent(int k,int x,vector<vector<int>>&parentsList){
+    int maxParent=parentsList[0].size();
+    for(int i=0;i<maxParent;i++){
+        if((k>>i) &1){
+            if(x!=-1) x=parentsList[x][i];
+        }
+    }
+    return x;
+}
+bool isAncestor(int x,int y,vector<int>&In,vector<int>&Out){
+    return ((In[y]>In[x]) && (Out[x]>Out[y]));//true if x is ancestor of y
+}
+
+
+//lowest common ancestor: O(logn)
+int lca(int x,int y,vector<vector<int>>&parentsList,vector<int>&In,vector<int>&Out){
+    //highest parent of x which is not an ancestor of y
+    if(isAncestor(x,y,In,Out)) return x;
+    if(isAncestor(y,x,In,Out)) return y;
+    int maxParent=parentsList[0].size();  //maxParents=log2(n)+1;
+    for(int i=maxParent-1;i>=0;i--){ 
+        int parentOf_x=parentsList[x][i];//finding out 2^(kth) parent of x is O(1) already stored by binary lifting 
+        if(parentOf_x!=-1 && !isAncestor(parentOf_x,y,In,Out)){
+            x=parentOf_x;
+        }
+    }
+    return parentsList[x][0];//at last return first parent of x;
+}
+int main()
+{
+    int n,q; cin>>n>>q;
+    vector<vector<int>>adj(n,vector<int>());
+    for(int i=1;i<n;i++){       //creating adjacency list
+        int a;cin>>a;
+        adj[a-1].push_back(i);
+    }
+    int root=0;
+    int maxParents=log2(n)+1;
+    vector<vector<int>>parentsList(n,vector<int>(maxParents,-1));
+    dfs(-1,root,adj,parentsList);//populate first ie 2^0th parents of all nodes
+
+    for(int j=1;j<maxParents;j++){//populate all 2^jth parents of all nodes
+        for(int i=0;i<n;i++){
+            int intermediate=parentsList[i][j-1];
+            if(intermediate!=-1) parentsList[i][j]=parentsList[intermediate][j-1];
+        }
+    }
+    vector<int>inTime(n),outTime(n);
+    int globalTime=0;
+    dfs_in_out(-1,root,adj,inTime,outTime,globalTime);
+
+    while(q--){
+        int x,y; cin>>x>>y;
+        x--,y--;
+        if(x==y){
+            cout<<x+1<<'\n';
+        }
+        else{
+            cout<<lca(x,y,parentsList,inTime,outTime)+1<<"\n";
+        }
+    }
+
+return 0;
+}
