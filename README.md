@@ -1,2 +1,2 @@
 # mycode
-<h1>C++ Codes</h1>
+<h1>C++ code of some advanced data structures and algorithms</h1>
