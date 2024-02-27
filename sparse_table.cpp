@@ -17,15 +17,15 @@ int main()
 {
     int n; cin>>n;
     vector<int>arr(n+1,0);
-    for(int i=0;i<n+1;i++)cin>>arr[i];
+    for(int i=1;i<=n;i++)cin>>arr[i];
     int N=20; //max n can be 2^20;
     vector<vector<int>>mn(n+1,vector<int>(N+1,0));
     
-    for(int i=1;i<n+1;i++){      //base case
+    for(int i=1;i<=n;i++){      //base case
         mn[i][0]=arr[i];
     }
     for(int j=1;j<=N;j++){
-        for(int i=0;(i+ 1<<j-1)<n+1;i++){   //2^(j-1)
+        for(int i=1;(i+(1<<j)-1)<=n;i++){   //(i+2^j)-1<=n
             mn[i][j]=min(mn[i][j-1],mn[i+(1<<(j-1))][j-1]);
         }
     }
