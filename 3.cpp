@@ -22,7 +22,8 @@ int32_t main(){
         adj[y].push_back(x);
     }
     vector<int>subtree_size(n,0),sum(n,0),ans(n,0);
-
+    
+/* Lambda function in c++ */
     function<void(int,int)>dfs=[&](int node,int parent)->void{
         subtree_size[node]=1,sum[node]=0;
         for(int child:adj[node])if(child!=parent){
