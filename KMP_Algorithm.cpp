@@ -3,7 +3,7 @@ using namespace std;
 #define mod 998244353
 #define int long long
 
-void findLPS(string &st, vector<int> &lps) {
+void findLPS(string &st, vector<int> &lps) { //https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/
     int n = st.length();
     lps[0] = 0;
     int len = 0;
@@ -28,15 +28,14 @@ void findLPS(string &st, vector<int> &lps) {
     }
 }
 
-vector<int> kmp(string &String, string &pattern, vector<int> &lps) {
-    int n = String.length(), m = pattern.length();
+vector<int> kmp(string &String, string &pattern, vector<int> &lps) { //https://www.youtube.com/watch?v=qases-9gOpk&t=2347s&ab_channel=codestorywithMIK
+    int n = String.length(), m = pattern.length();                  //https://www.youtube.com/watch?v=V5-7GzOfADQ&ab_channel=AbdulBari
     pattern = " " + pattern;
     vector<int>piTable(m + 1, 0);
     vector<int> ans;
     for (int i = 1; i <= m; i++) piTable[i] = lps[i - 1];
     int i = 0, j = 0;
     while (i < n) {
-        cout << i << " " << j << "\n";
         if (j == m) {
             ans.push_back(i - j + 1);
             j = piTable[j];
