@@ -2,8 +2,13 @@
 using namespace std;
 #define mod 998244353
 #define int long long
+/* lps[i] = length of the longest proper prefix which is also a proper suffix of st[0, ..., i]
+NOTE: Prefix and suffix can be overlapping but they should not be equal to the entire string.
+eg. aaaa -> aaa ie lps[n-1] = 3
+abab -> ab ie lps[n-1] = 2
+*/
 
-void findLPS(string &st, vector<int> &lps) { //https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/
+void findLPS(string &st, vector<int> &lps) { //https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/   O(n+n)
     int n = st.length();
     lps[0] = 0;
     int len = 0;
@@ -28,6 +33,7 @@ void findLPS(string &st, vector<int> &lps) { //https://www.geeksforgeeks.org/kmp
     }
 }
 
+//O(n+m)
 vector<int> kmp(string &String, string &pattern, vector<int> &lps) { //https://www.youtube.com/watch?v=qases-9gOpk&t=2347s&ab_channel=codestorywithMIK
     int n = String.length(), m = pattern.length();                  //https://www.youtube.com/watch?v=V5-7GzOfADQ&ab_channel=AbdulBari
     pattern = " " + pattern;
