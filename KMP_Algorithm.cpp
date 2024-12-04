@@ -9,7 +9,7 @@ abab -> ab ie lps[n-1] = 2
 */
 
 void findLPS(string &st, vector<int> &lps) { //https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/   O(n+n)
-    int n = st.length();
+    int n = st.length();                     //https://www.geeksforgeeks.org/problems/check-if-strings-are-rotations-of-each-other-or-not-1587115620/1
     lps[0] = 0;
     int len = 0;
     int i = 1;
