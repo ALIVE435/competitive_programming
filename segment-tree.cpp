@@ -20,33 +20,27 @@ void build(int left,int right,int node,int arr[]){
     return;
 }
 int mxquery(int left,int right,int ql,int qr,int node,int arr[],int n){
-    if(right<ql || left>qr)return INT_MAX;
+    if(right<ql || left>qr)return -1;
     else if(ql<=left && qr>=right)return segmax[node];
     else{
         int mid=(left+right)/2;
         int l=mxquery(left,mid,ql,qr,2*node+1,arr,n);
         int r=mxquery(mid+1,right,ql,qr,2*node+2,arr,n);
-        if((l>=0 && l<=n-1) && (r>=0 && r<=n-1)){
-            if(arr[l]<arr[r])return r;
-            else return l;
-        }
-        else if(l>=0 && l<=n-1)return l;
-        else return r;
+        if (l < 0) return r;
+        if (r < 0) return l;
+        return arr[l] > arr[r] ? l : r;
     }
 }
 int mnquery(int left,int right,int ql,int qr,int node,int arr[],int n){
-    if(right<ql || left>qr)return INT_MAX;
+    if (right < ql || left > qr) return -1;
     else if(ql<=left && qr>=right)return segmin[node];
     else{
         int mid=(left+right)/2;
         int l=mnquery(left,mid,ql,qr,2*node+1,arr,n);
         int r=mnquery(mid+1,right,ql,qr,2*node+2,arr,n);
-        if((l>=0 && l<=n-1) && (r>=0 && r<=n-1)){
-            if(arr[l]<arr[r])return l;
-            else return r;
-        }
-        else if(l>=0 && l<=n-1)return l;
-        else return r;
+        if (l == -1) return r; // Only right child has a valid index
+        if (r == -1) return l; // Only left child has a valid index
+        return arr[l] < arr[r] ? l : r;
     }
 }
 
